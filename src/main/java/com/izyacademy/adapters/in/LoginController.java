@@ -2,6 +2,7 @@ package com.izyacademy.adapters.in;
 
 import com.izyacademy.adapters.in.dto.LoginRequest;
 import com.izyacademy.adapters.in.dto.RegisterRequest;
+import com.izyacademy.adapters.in.validation.UserValidation;
 import com.izyacademy.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        new UserValidation().validateLogin(request);
         // El servicio devuelve el nombre del usuario si el login es exitoso.
         String userName = authService.login(request);
         // Si el login es exitoso, devolvemos un 200 OK con el nombre del usuario.
@@ -28,6 +30,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request) {
+        new UserValidation().validateRegister(request);
         // Delegamos el registro al servicio.
         authService.register(request);
         // Devolvemos un 201 Created para indicar que el recurso se creó con éxito.
